@@ -1,25 +1,43 @@
 <ion-header [translucent]="true">
-  <ion-toolbar>
+  <ion-toolbar color="secondary">
     <ion-title>
-      Inbox
+      <img src="assets/logo.png">
     </ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="addChecklist()">
+        <ion-icon slot="icon-only" name="add"></ion-icon>
+      </ion-button>
+    </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
-<ion-content [fullscreen]="true">
-  <ion-refresher slot="fixed" (ionRefresh)="refresh($event)">
-    <ion-refresher-content></ion-refresher-content>
-  </ion-refresher>
-  
+<ion-content [fullscreen]="true">  
   <ion-header collapse="condense">
     <ion-toolbar>
-      <ion-title size="large">
-        Inbox
+      <ion-title size="large" color="light">
+        Your List
       </ion-title>
     </ion-toolbar>
   </ion-header>
   
-  <ion-list>
-    <app-message *ngFor="let message of getMessages()" [message]="message"></app-message>
-  </ion-list>
+  <div id="container">
+    <ion-list lines="none">
+      <ion-item-sliding *ngFor="let checklist of checklists">
+        <ion-item routerLink="/checklists/{{checklist.id}}" routerDirection="forward">
+          <ion-label>{{checklist.title}}</ion-label>
+          <span>{{checklist.items.length}} Items</span>
+        </ion-item>
+        <ion-item-options side="end">
+          <ion-item-option color="light" (click)="renameChecklist(checklist)">
+            <ion-icon slot="icon-only" name="clipboard"></ion-icon>
+          </ion-item-option>
+          <ion-item-option color="danger" (click)="removeChecklist(checklist)">
+            <ion-icon slot="icon-only" name="trash"></ion-icon>
+          </ion-item-option>
+        </ion-item-options>
+      </ion-item-sliding>
+    </ion-list>
+  </div>
+
+
 </ion-content>
